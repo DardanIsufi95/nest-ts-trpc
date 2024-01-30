@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 import styles from "./index.module.css";
-import { api} from "~/trpc/client";
+import { api} from "~/trpc/react";
 
 export default  async function Home() {
 
