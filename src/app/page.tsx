@@ -9,9 +9,7 @@ export default  function Home() {
     text: "from tRPC",
   });
 
-  const test = api.post.hello.useQuery({
-    text: "from tRPC",
-  })
+
 
   // const test = await api.post.testfunction.query({ text: "from tRPC" });
 

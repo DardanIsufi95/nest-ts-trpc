@@ -21,6 +21,11 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url()
     ),
+    MYSQL_HOST: z.string(),
+    MYSQL_PORT: z.preprocess((str) => (typeof str ==  'string'? parseInt(str, 10) : new Error()) , z.number()),
+    MYSQL_USER: z.string(),
+    MYSQL_PASSWORD: z.string(),
+    MYSQL_DATABASE: z.string()
   },
 
   /**
@@ -39,7 +44,12 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    MYSQL_HOST: process.env.MYSQL_HOST,
+    MYSQL_PORT: process.env.MYSQL_PORT,
+    MYSQL_USER: process.env.MYSQL_USER,
+    MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
+    MYSQL_DATABASE: process.env.MYSQL_DATABASE
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

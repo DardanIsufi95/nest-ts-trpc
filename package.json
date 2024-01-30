@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "dev:server": "next dev",
+    "dev:dbgenerate": "mytsql -c cgen.config.cjs",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
@@ -21,6 +23,9 @@
     "@trpc/next": "^10.43.6",
     "@trpc/react-query": "^10.43.6",
     "@trpc/server": "^10.43.6",
+    "knex": "^3.1.0",
+    "mysql2": "^3.7.1",
+    "mytsql-lib": "^0.1.0",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "react": "18.2.0",
@@ -31,13 +36,16 @@
   },
   "devDependencies": {
     "@types/eslint": "^8.44.7",
+    "@types/estree": "^1.0.5",
     "@types/node": "^18.17.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.54.0",
     "eslint-config-next": "^14.0.4",
+    "node-sql-parser": "^4.17.0",
     "typescript": "^5.1.6"
   },
   "ct3aMetadata": {

@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 
 
-import { getServerAuthSession } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth/auth";
 
 
 const inter = Inter({
