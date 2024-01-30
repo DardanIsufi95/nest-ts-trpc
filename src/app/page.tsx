@@ -1,8 +1,8 @@
-"use client";
+
 import Link from "next/link";
 
 import styles from "./index.module.css";
-import { api} from "~/trpc/react";
+import { api} from "~/trpc/server";
 
 export default  async function Home() {
 
