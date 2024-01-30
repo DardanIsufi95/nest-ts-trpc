@@ -1,26 +1,25 @@
 "use client";
 import Link from "next/link";
-import { api } from "~/trpc/react";
+
 import styles from "./index.module.css";
+import { api} from "~/trpc/client";
 
-export default  function Home() {
-  // noStore();
-  const {data , isLoading} =  api.post.hello.useQuery({
-    text: "from tRPC",
-  });
+export default  async function Home() {
 
+  const data =  await api.post.me.query();
 
+  console.log("data", data);
 
-  // const test = await api.post.testfunction.query({ text: "from tRPC" });
-
-  // const session = await getServerAuthSession();
+  
 
   return (
     <main className={styles.main}>
+      <h1 className={styles.title}>Welcome to tRPC!</h1>
+      <h3 className={styles.title}>You are now authenticated as {data.name}</h3>
       <Link href="/api/auth/signout">Logout</Link>
       <br />
       <Link href={"/ssr"}>Try out ssr</Link>
-      <h1>hello {isLoading ? "loading" : data?.greeting}</h1>
+     
 
     </main>
   );

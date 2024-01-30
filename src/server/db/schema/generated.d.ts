@@ -2,7 +2,13 @@ export type GenerateSetCombinations<T extends string, U extends string = T> = T 
 
 export type testSchema = { 
 	routines : {
-		
+		getUserByUsernameAndPassword : {
+			parameters : [
+				_username : string | null,
+				_password : string | null
+			] ,
+			returns : any[][]
+		}
 	} ,
 	tables : {
 		comments : {

@@ -1,68 +1,46 @@
 "use client";
 
 import React from 'react';
-import { Button, TextField, Box, Typography, Container } from '@mui/material';
+
 import { signIn } from 'next-auth/react';
 
 export default function LoginPage(){
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: React.MouseEvent<HTMLFormElement , MouseEvent>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 
-
+		console.log("data", data);
 		
 		signIn('credentials', {
-			username: data.get('email'),
+			username: data.get('username'),
 			password: data.get('password'),
 			callbackUrl: `${window.location.origin}/`,
+		}).then((error) => {
+			console.log("errodasdasdasdr", error);
+		}).catch((error) => {
+			console.log("errodasdasdasdr", error);
 		});
 
 	};
   
 	return (
-	<Container component="main" maxWidth="xs">
-		<Box
-		  sx={{
-			marginTop: 8,
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-		  }}
-		>
-		  	<Typography component="h1" variant="h5">
-				Sign in
-		  	</Typography>
-		  	<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-				<TextField
-					margin="normal"
+		<>
+			<form onSubmit={handleSubmit}>
+		
+				<input name='username' id='email' type='text' autoComplete='email' required />
+
+				<label htmlFor='password'>Password</label>
+				<input
+					id='password'
+					type='password'
+					autoComplete='current-password'
+					name='password'
 					required
-					fullWidth
-					id="email"
-					label="Email Address"
-					name="email"
-					autoComplete="email"
-					autoFocus
-				/>
-				<TextField
-					margin="normal"
-					required
-					fullWidth
-					name="password"
-					label="Password"
-					type="password"
-					id="password"
-					autoComplete="current-password"
-				/>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					sx={{ mt: 3, mb: 2 }}
-				>
-				Sign In
-				</Button>
-		  	</Box>
-		</Box>
-	</Container>
-	);
+				/>	
+				<button type='submit'>Sign in</button>
+			</form>
+			
+			
+		</>
+	);	
   }

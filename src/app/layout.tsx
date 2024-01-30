@@ -2,9 +2,10 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
+import { SessionProvider } from "next-auth/react";
 
 
-import { getServerAuthSession } from "~/server/auth/auth";
+
 
 
 const inter = Inter({
@@ -19,8 +20,10 @@ export const metadata = {
 
 export default async function RootLayout({
 	children,
+	session
 }: {
 	children: React.ReactNode;
+	session: any;
 }) {
 
 	// const session = await getServerAuthSession();
@@ -30,7 +33,9 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<TRPCReactProvider>{children}</TRPCReactProvider>
+		
+					<TRPCReactProvider>{children}</TRPCReactProvider>
+			
 			</body>
 		</html>
 	);

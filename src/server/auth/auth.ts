@@ -1,19 +1,9 @@
-import {
-	getServerSession,
-	type DefaultSession,
-	type NextAuthOptions,
-} from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-
 import { env } from "~/env";
+import db from "~/server/db";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
+
 declare module "next-auth" {
 	interface Session extends DefaultSession {
 		user: {
@@ -29,27 +19,10 @@ declare module "next-auth" {
 	// }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
-export const authOptions: NextAuthOptions = {
-	callbacks: {
-		session: ({ session, token }) => ({
-			...session,
-			accessToken: token.accessToken,
-			user: {
-				...session.user,
-				id: token.sub,
-			}
-		}),
-		async jwt({ token, user, account, profile }) {
-			console.log('jwt', token, user, account, profile);
-			return token;
-		}
-	},
-	providers: [
+
+
+export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth({
+    providers: [
 		CredentialsProvider({
 			id: "credentials",
 			name: "Credentials",
@@ -65,48 +38,42 @@ export const authOptions: NextAuthOptions = {
 			},
 			async authorize(credentials ) {
 				let user = null;
-
-				if (
-					credentials?.username === 'dardan' &&
-					credentials?.password === 'dardan'
-				) {
-					user = {
-						id: "1",
-						name: "Dardan Isufi",
-						email: "test",
-					}
-				}
-
-
+				console.log(credentials);
 				
-				if (user) {
-					return user;
-				} else {
+
+
+				if (typeof credentials?.username != 'string' || typeof credentials?.password != 'string') {
 					return null;
 				}
+				
+				const {dataSet } = await db.sp.getUserByUsernameAndPassword(credentials.username, credentials.password)
+				const [userRow] = dataSet;
+				const userObj =userRow?.[0] ?? null;
+
+				throw new Error('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
+				return userObj
+
+				
+				
 			},
 			
 		}),
 	],
 	secret: env.NEXTAUTH_SECRET,
-	jwt: {
-		secret: 'secret',
-	},
+    jwt:{
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        
+    
+    },
 	session: {
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 		updateAge: 20, // 20 seconds,
 		strategy: 'jwt',
 	},
-	pages: {
-		signIn: "/auth/login",
-		signOut: "/auth/logout",
+	pages:{
+		signIn: '/auth/login',
+		signOut: '/auth/logout',
+		error: '/auth/login',
 	},
 	debug: true
-};
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-export const getServerAuthSession = () => getServerSession(authOptions);
+});

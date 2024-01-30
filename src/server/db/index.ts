@@ -11,8 +11,7 @@ export const myTSQL = createMyTSQL<testSchema>({
         port: env.MYSQL_PORT,
         password: env.MYSQL_PASSWORD,
         database: env.MYSQL_DATABASE
-    },
-    pool: { min: 0, max: 7 }
+    }
 })  
 
 
