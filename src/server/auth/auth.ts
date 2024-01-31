@@ -1,5 +1,6 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth, { AuthError, DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextResponse } from "next/server";
 import { env } from "~/env";
 import db from "~/server/db";
 
@@ -19,6 +20,17 @@ declare module "next-auth" {
 	// }
 }
 
+class TestError extends AuthError {
+	constructor() {
+		super({
+			errorCode: 'test',
+			error: 'test',
+			statusCode: 401,
+			message: 'test',
+		});
+	}
+
+}
 
 
 export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth({
@@ -50,12 +62,14 @@ export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth({
 				const [userRow] = dataSet;
 				const userObj =userRow?.[0] ?? null;
 
-				throw new Error('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
+				throw new TestError();
+				
 				return userObj
 
 				
 				
 			},
+			
 			
 		}),
 	],

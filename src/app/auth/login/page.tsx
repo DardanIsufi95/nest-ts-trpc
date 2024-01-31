@@ -1,31 +1,32 @@
-"use client";
-
+"use client"
 import React from 'react';
 
-import { signIn } from 'next-auth/react';
+import { signIn } from '~/server/auth/auth';
+const handleSubmit = (event: React.MouseEvent<HTMLFormElement , MouseEvent>) => {
+	"use server"
+	event.preventDefault();
+	const data = new FormData(event.currentTarget);
+
+	console.log("data", data);
+	
+	signIn('credentials', {
+		username: data.get('username'),
+		password: data.get('password'),
+		callbackUrl: `${window.location.origin}/`,
+	}).then((res) => {
+		console.log("res", res);
+	}).catch((error) => {
+		console.log("error", error);
+	});
+
+};
 
 export default function LoginPage(){
-	const handleSubmit = (event: React.MouseEvent<HTMLFormElement , MouseEvent>) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-
-		console.log("data", data);
-		
-		signIn('credentials', {
-			username: data.get('username'),
-			password: data.get('password'),
-			callbackUrl: `${window.location.origin}/`,
-		}).then((error) => {
-			console.log("errodasdasdasdr", error);
-		}).catch((error) => {
-			console.log("errodasdasdasdr", error);
-		});
-
-	};
+	
   
 	return (
 		<>
-			<form onSubmit={handleSubmit}>
+			<form action={handleSubmit}>
 		
 				<input name='username' id='email' type='text' autoComplete='email' required />
 
