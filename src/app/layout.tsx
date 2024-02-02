@@ -18,13 +18,7 @@ export const metadata = {
 	icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default async function RootLayout({
-	children,
-	session
-}: {
-	children: React.ReactNode;
-	session: any;
-}) {
+export default async function RootLayout({ children }:{children: React.ReactNode}) {
 
 	// const session = await getServerAuthSession();
 

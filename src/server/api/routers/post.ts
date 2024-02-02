@@ -16,11 +16,16 @@ export const postRouter = createTRPCRouter({
 	login: publicProcedure
 		.input(z.object({ username: z.string(), password: z.string() }))
 		.mutation(async ({ input, ctx }) => {
-			return signIn('credentials',input).catch((error) => {
-				console.log(error);
+			return signIn('credentials',input).catch((error: unknown) => {
+				if (error instanceof Error) {
+					console.log(error);
+					return {
+						error: error.message ?? "An error occurred",
+					};
+				}
+				// Handle case where error is not an instance of Error
 				return {
-					error: error.message,
-
+					error: "An error occurred",
 				};
 			});
 		}),

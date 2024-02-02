@@ -1,8 +1,8 @@
-import NextAuth, { AuthError, DefaultSession } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { NextResponse } from "next/server";
+import NextAuth, { AuthError, DefaultSession, NextAuthConfig } from "next-auth";
+
 import { env } from "~/env";
-import db from "~/server/db";
+
+import CredentialsProvider from "~/server/auth/CredentialsProvider"
 
 
 declare module "next-auth" {
@@ -20,58 +20,10 @@ declare module "next-auth" {
 	// }
 }
 
-class TestError extends AuthError {
-	constructor() {
-		super({
-			errorCode: 'test',
-			error: 'test',
-			statusCode: 401,
-			message: 'test',
-		});
-	}
 
-}
-
-
-export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth({
-    providers: [
-		CredentialsProvider({
-			id: "credentials",
-			name: "Credentials",
-			credentials: {
-				username: {
-					label: "Username",
-					type: "text",
-				},
-				password: {
-					label: "Password",
-					type: "password",
-				},
-			},
-			async authorize(credentials ) {
-				let user = null;
-				console.log(credentials);
-				
-
-
-				if (typeof credentials?.username != 'string' || typeof credentials?.password != 'string') {
-					return null;
-				}
-				
-				const {dataSet } = await db.sp.getUserByUsernameAndPassword(credentials.username, credentials.password)
-				const [userRow] = dataSet;
-				const userObj =userRow?.[0] ?? null;
-
-				throw new TestError();
-				
-				return userObj
-
-				
-				
-			},
-			
-			
-		}),
+export const authOptions : NextAuthConfig = {
+	providers: [
+		CredentialsProvider
 	],
 	secret: env.NEXTAUTH_SECRET,
     jwt:{
@@ -89,5 +41,7 @@ export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth({
 		signOut: '/auth/logout',
 		error: '/auth/login',
 	},
-	debug: true
-});
+	debug: false
+}
+
+export const {auth , signIn, signOut, handlers : {GET , POST}} = NextAuth(authOptions);

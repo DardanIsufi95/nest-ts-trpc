@@ -3,10 +3,20 @@ import Link from "next/link";
 
 import styles from "./index.module.css";
 import { api} from "~/trpc/server";
+import { signOut } from "next-auth/react";
+import { Suspense } from "react";
+import { LogoutButton } from "./_components/LogoutButton";
+
+
+
+
+
+
 
 export default  async function Home() {
 
-  const data =  await api.post.me.query();
+  const data =  await api.auth.me();
+
 
   console.log("data", data);
 
@@ -16,7 +26,10 @@ export default  async function Home() {
     <main className={styles.main}>
       <h1 className={styles.title}>Welcome to tRPC!</h1>
       <h3 className={styles.title}>You are now authenticated as {data.name}</h3>
-      <Link href="/api/auth/signout">Logout</Link>
+      
+      <LogoutButton name={data.name} />
+ 
+      
       <br />
       <Link href={"/ssr"}>Try out ssr</Link>
      
