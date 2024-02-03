@@ -42,13 +42,12 @@ export default CredentialsProvider({
         return {
             id: "1",
             name: username,
-            email: "test",
+            email: username,
             image: "https://avatars.githubusercontent.com/u/1396951?v=4",
         }
 
         
         
     },
-    
-    
+    type: "credentials",
 })

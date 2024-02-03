@@ -38,7 +38,7 @@ export default auth((req) => {
 
 	if (isAuthRoute) {
 		if (isLoggedIn) {
-			return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+			return NextResponse.redirect(new URL("https://6498-46-99-51-9.ngrok-free.app", nextUrl.pathname))
 		}
 		return null;
 	}
@@ -61,25 +61,25 @@ export default auth((req) => {
 })
 
 // //Optionally, don't invoke Middleware on some paths
-export const config = {
-  	matcher: ['/((?!.+\\.[\\w]+$|_next).*)',  '/(api|trpc)(.*)'],
-}
+// export const config = {
+//   	matcher: ['/((?!.+\\.[\\w]+$|_next).*)',  '/(api|trpc)(.*)'],
+// }
 // export const config = {
 //     matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 // }
 
-// export const config = {
-// 	matcher: [
-// 	  /*
-// 	   * Match all request paths except for the ones starting with:
-// 	   * - api (API routes)
-// 	   * - _next/static (static files)
-// 	   * - _next/image (image optimization files)
-// 	   * - favicon.ico (favicon file)
-// 	   */
-// 	  {
-// 		source: '/((?!api/trpc|_next/static|_next/image|favicon.ico).*)',
+export const config = {
+	matcher: [
+	  /*
+	   * Match all request paths except for the ones starting with:
+	   * - api (API routes)
+	   * - _next/static (static files)
+	   * - _next/image (image optimization files)
+	   * - favicon.ico (favicon file)
+	   */
+	  {
+		source: '/((?!api/trpc|api/socket/io|_next/static|_next/image|favicon.ico).*)',
 		
-// 	  },
-// 	],
-//   }
+	  },
+	],
+  }

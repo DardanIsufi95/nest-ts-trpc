@@ -27,9 +27,9 @@ export default async function RootLayout({ children }:{children: React.ReactNode
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-		
-					<TRPCReactProvider>{children}</TRPCReactProvider>
-			
+			<SessionProvider refetchOnWindowFocus={false}>
+				<TRPCReactProvider>{children}</TRPCReactProvider>
+			</SessionProvider>
 			</body>
 		</html>
 	);

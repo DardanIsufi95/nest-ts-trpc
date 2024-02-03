@@ -9,7 +9,7 @@ export const authRouter = createTRPCRouter({
     login: publicProcedure
         .input(credentialsSchema)
         .mutation(async ({ input, ctx }) => {
-
+            
             try {
                 await signIn('credentials',{
                     ...input,

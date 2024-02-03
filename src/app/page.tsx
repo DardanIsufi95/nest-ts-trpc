@@ -15,7 +15,10 @@ import { LogoutButton } from "./_components/LogoutButton";
 
 export default  async function Home() {
 
-  const data =  await api.auth.me();
+  const data =  await api.auth.me().catch((err) => {
+    console.error(err);
+    return null;
+  });
 
 
   console.log("data", data);
@@ -25,13 +28,14 @@ export default  async function Home() {
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>Welcome to tRPC!</h1>
-      <h3 className={styles.title}>You are now authenticated as {data.name}</h3>
+      <h3 className={styles.title}>You are now authenticated as {data?.name}</h3>
       
-      <LogoutButton name={data.name} />
+      <LogoutButton name={data?.name} />
  
       
       <br />
-      <Link href={"/ssr"}>Try out ssr</Link>
+      <Link className="m-2" href={"/ssr"}>Try out ssr</Link>
+      <Link className="m-2" href={"/dashboard"}>Try out dashboard</Link>
      
 
     </main>

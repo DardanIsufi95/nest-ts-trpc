@@ -3,6 +3,7 @@ import NextAuth, { AuthError, DefaultSession, NextAuthConfig } from "next-auth";
 import { env } from "~/env";
 
 import CredentialsProvider from "~/server/auth/CredentialsProvider"
+import { MyAdapter } from "./Adapter";
 
 
 declare module "next-auth" {
@@ -22,19 +23,21 @@ declare module "next-auth" {
 
 
 export const authOptions : NextAuthConfig = {
+	adapter: MyAdapter,
 	providers: [
 		CredentialsProvider
 	],
 	secret: env.NEXTAUTH_SECRET,
     jwt:{
         maxAge: 30 * 24 * 60 * 60, // 30 days
-        
-    
     },
 	session: {
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 		updateAge: 20, // 20 seconds,
 		strategy: 'jwt',
+	},
+	cookies: {
+
 	},
 	pages:{
 		signIn: '/auth/login',
